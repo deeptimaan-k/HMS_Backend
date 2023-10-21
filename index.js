@@ -23,7 +23,7 @@ app.get('/', (req,res) => {
     res.send({ title: 'Doctor' });
 })
 
-app.get('/doctor', async (req,res)=> {
+app.get('/doctorLogin', async (req,res)=> {
 
   const doctor = await doctor.find();
   if (doctor) {
