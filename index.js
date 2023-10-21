@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express')
 const mongoose = require('mongoose')
-const Book = require("./models/books");
+const Book = require("./models/DoctorLogin");
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -20,10 +20,10 @@ const connectDB = async () => {
 
 //Routes go here
 app.get('/', (req,res) => {
-    res.send({ title: 'Books' });
+    res.send({ title: 'Doctor' });
 })
 
-app.get('/books', async (req,res)=> {
+app.get('/doctor', async (req,res)=> {
 
   const book = await Book.find();
 
@@ -35,16 +35,18 @@ app.get('/books', async (req,res)=> {
   
 });
 
-app.get('/add-note', async (req,res) => {
+app.get('/add-doctor', async (req,res) => {
   try {
     await Book.insertMany([
       {
-        title: "Sons Of Anarchy",
-        body: "Body text goes here...",
+        userType: "Hospital",
+        docID: "4452",
+        password: "password123",
       },
       {
-        title: "Games of Thrones",
-        body: "Body text goes here...",
+        userType: "Hospital",
+        docID: "2522",
+        password: "123",
       }
     ]);
     res.json({"Data":"Added"})
