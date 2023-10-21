@@ -1,64 +1,61 @@
 require('dotenv').config();
 
-const express = require('express');
-const mongoose = require('mongoose');
-const Doctor = require('./models/Doctor.model');
+const express = require('express')
+const mongoose = require('mongoose')
+const Book = require("./models/books");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express()
+const PORT = process.env.PORT || 3000
 
-mongoose.set('strict', false);
-
+mongoose.set('strictQuery', false);
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     process.exit(1);
   }
-};
+}
 
-app.get('/', (req, res) => {
-  res.json({ title: 'Doctor' });
-});
+//Routes go here
+app.get('/', (req,res) => {
+    res.send({ title: 'Books' });
+})
 
-app.get('/doctors', async (req, res) => {
-  try {
-    const doctors = await Doctor.find();
-    res.json(doctors);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
+app.get('/books', async (req,res)=> {
+
+  const book = await Book.find();
+
+  if (book) {
+    res.json(book)
+  } else {
+    res.send("Something went wrong.");
   }
+  
 });
 
-app.get('/add-doctor', async (req, res) => {
+app.get('/add-note', async (req,res) => {
   try {
-    const result = await Doctor.insertMany([
+    await Book.insertMany([
       {
-        userType: 'Hospital',
-        docID: '4452',
-        password: 'password123',
+        title: "Sons Of Anarchy",
+        body: "Body text goes here...",
       },
       {
-        userType: 'Hospital',
-        docID: '2522',
-        password: '123',
+        title: "Games of Thrones",
+        body: "Body text goes here...",
       }
     ]);
-    res.json({ message: 'Data Added', result });
+    res.json({"Data":"Added"})
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Something went wrong' });
+    console.log("err", + error);
   }
-});
+})
 
+//Connect to the database before listening
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log('Listening for requests');
-  });
-});
+    app.listen(PORT, () => {
+        console.log("listening for requests");
+    })
+})
