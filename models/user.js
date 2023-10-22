@@ -1,9 +1,12 @@
-const mongoose = require('mongoose');
+// models/User.js
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  userType: String, // "Hospital," "Patient," "Insurance," etc.
-  userID: String, // You can use a different data type as needed
-  password: String, // Store hashed passwords
+  userType: String,
+  userID: String,
+  password: String,
 });
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
