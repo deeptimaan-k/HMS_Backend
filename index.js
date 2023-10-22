@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI; // Replace with your MongoDB URI
 
 app.use(cors());
-app.use(express.json()); // Use built-in JSON body parsing
+app.use(express.json()); 
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,

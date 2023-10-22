@@ -3,26 +3,24 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 
-// POST route for user registration
-router.post('/register', async (req, res) => {
+// POST route for user login
+router.post('/login', async (req, res) => {
   try {
     const { userType, userID, password } = req.body;
 
-    // Check if the user already exists in the database
-    const existingUser = await User.findOne({ userType, userID });
+    // Check if the user exists in the database
+    const user = await User.findOne({ userType, userID, password });
 
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: 'User already exists' });
+    if (user) {
+      // User is authenticated
+      res.status(200).json({ success: true, message: 'Login successful' });
+    } else {
+      // User login failed
+      res.status(401).json({ success: false, message: 'Login failed' });
     }
-
-    // Create a new user
-    const newUser = new User({ userType, userID, password });
-    await newUser.save();
-
-    res.status(201).json({ success: true, message: 'User registered successfully' });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ success: false, message: 'Error registering user' });
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, message: 'Error during login' });
   }
 });
 
