@@ -1,22 +1,29 @@
 // routes/auth.js
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const User = require("../models/user");
+const User = require('../models/user');
 
-router.post("/login", async (req, res) => {
-  const { userType, userID, password } = req.body;
-
+// POST route for user registration
+router.post('/register', async (req, res) => {
   try {
-    const user = await User.findOne({ userType, userID, password });
+    const { userType, userID, password } = req.body;
 
-    if (user) {
-      res.json({ success: true });
-    } else {
-      res.json({ success: false });
+    // Check if the user already exists in the database
+    const existingUser = await User.findOne({ userType, userID });
+
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
     }
+
+    // Create a new user
+    const newUser = new User({ userType, userID, password });
+    await newUser.save();
+
+    res.status(201).json({ success: true, message: 'User registered successfully' });
   } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ success: false, error: "Login error" });
+    console.error('Registration error:', error);
+    res.status(500).json({ success: false, message: 'Error registering user' });
   }
 });
+
 module.exports = router;
