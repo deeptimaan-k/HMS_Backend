@@ -22,7 +22,7 @@ const patientSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    default: "password",
+   required: true,
   },
   age: {
     type: Number,
