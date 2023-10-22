@@ -1,8 +1,7 @@
 // routes/auth.js
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
-
+const User = require('../models/patient');
 // POST route for user login
 router.post('/login', async (req, res) => {
   try {
