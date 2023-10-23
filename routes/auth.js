@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
@@ -7,10 +6,8 @@ const User = require('../models/user');
 router.post('/login', async (req, res) => {
   try {
     const { userType, userID, password } = req.body;
-
     // Check if the user exists in the database
     const user = await User.findOne({ userType, userID, password });
-
     if (user) {
       // User is authenticated
       res.status(200).json({ success: true, message: 'Login successful' });
@@ -23,3 +20,4 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error during login' });
   }
 });
+module.exports = router;
